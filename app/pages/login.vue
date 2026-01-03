@@ -33,6 +33,10 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+    title: '登录 | Video Hub',
+});
+
 const username = ref('');
 const password = ref('');
 const loading = ref(false);

@@ -83,6 +83,10 @@
 <script setup lang="ts">
 import { Picture, VideoCamera } from '@element-plus/icons-vue';
 
+useHead({
+    title: '上传 | Video Hub',
+});
+
 const title = ref('');
 const category = ref('');
 const videoFile = ref<File | null>(null);

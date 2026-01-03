@@ -43,6 +43,7 @@ const getCategoryLabel = (value?: string) => {
 };
 
 useHead(() => ({
+    title: () => (video.value ? `${video.value.title} | Video Hub` : 'Video Hub'),
     meta: [
         {
             name: 'adflux-page-category',

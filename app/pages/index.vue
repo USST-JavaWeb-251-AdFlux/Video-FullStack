@@ -39,6 +39,10 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+    title: 'Video Hub',
+});
+
 const { data: videos } = await useFetch('/api/videos');
 
 const appConfig = useAppConfig();

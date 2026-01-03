@@ -74,11 +74,15 @@ const thumbFile = ref<File | null>(null);
 const loading = ref(false);
 const token = useCookie('token');
 
-onMounted(() => {
-    if (!token.value) {
-        ElMessage.warning('请先登录');
-        navigateTo('/login');
-    }
+definePageMeta({
+    middleware: () => {
+        if (!token.value) {
+            if (process.client) {
+                ElMessage.warning('请先登录');
+            }
+            return navigateTo('/login');
+        }
+    },
 });
 
 const onVideoChange = (e: Event) => {

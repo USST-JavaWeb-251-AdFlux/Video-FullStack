@@ -39,9 +39,10 @@ export default defineEventHandler(async (event) => {
     const videoFile = Array.isArray(files.video) ? files.video[0] : files.video;
     const thumbnailFile = Array.isArray(files.thumbnail) ? files.thumbnail[0] : files.thumbnail;
     const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
+    const category = Array.isArray(fields.category) ? fields.category[0] : fields.category;
 
-    if (!videoFile || !thumbnailFile || !title) {
-        throw createError({ statusCode: 400, statusMessage: '缺少视频、封面或标题' });
+    if (!videoFile || !thumbnailFile || !title || !category) {
+        throw createError({ statusCode: 400, statusMessage: '缺少视频、封面、标题或分类' });
     }
 
     const videoExt = path.extname(videoFile.originalFilename || '.mp4');
@@ -84,8 +85,8 @@ export default defineEventHandler(async (event) => {
     const thumbUrl = `/uploads/${thumbFilename}`;
 
     const result = await sql<{ id: number }[]>`
-        INSERT INTO videos (title, url, thumbnail_url, duration, uploader_id)
-        VALUES (${title}, ${videoUrl}, ${thumbUrl}, ${duration}, ${user.id})
+        INSERT INTO videos (title, url, thumbnail_url, duration, category, uploader_id)
+        VALUES (${title}, ${videoUrl}, ${thumbUrl}, ${duration}, ${category}, ${user.id})
         RETURNING id
     `;
 

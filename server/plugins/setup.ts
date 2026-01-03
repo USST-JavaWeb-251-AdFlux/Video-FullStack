@@ -22,6 +22,7 @@ export default defineNitroPlugin(async () => {
                 url TEXT NOT NULL,
                 thumbnail_url TEXT NOT NULL,
                 duration FLOAT NOT NULL,
+                category VARCHAR(50),
                 uploader_id INTEGER REFERENCES users(id),
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
             );

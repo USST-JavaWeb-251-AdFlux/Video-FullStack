@@ -11,7 +11,20 @@
                 <el-avatar :size="40" icon="UserFilled" />
                 <div class="uploader-info">
                     <div class="uploader-name">{{ video.uploader }}</div>
-                    <div class="video-meta">发布于最近</div>
+                    <div class="video-meta">
+                        <span
+                            >发布于
+                            {{
+                                new Date(video.created_at).toLocaleString('zh-CN', {
+                                    dateStyle: 'short',
+                                    timeStyle: 'medium',
+                                })
+                            }}</span
+                        >
+                        <el-tag size="small" type="info" class="category-tag">{{
+                            getCategoryLabel(video.category)
+                        }}</el-tag>
+                    </div>
                 </div>
             </div>
         </el-card>
@@ -22,9 +35,22 @@
 const route = useRoute();
 const { data: video } = await useFetch(`/api/videos/${route.params.id}`);
 
-useHead({
+const appConfig = useAppConfig();
+const videoCategories = appConfig.videoCategories;
+
+const getCategoryLabel = (value?: string) => {
+    return videoCategories?.find((c) => c.value === value)?.label || value;
+};
+
+useHead(() => ({
     title: video.value ? `${video.value.title} | Video Hub` : 'Video Hub',
-});
+    meta: [
+        {
+            name: 'adflux-page-category',
+            content: getCategoryLabel(video.value?.category),
+        },
+    ],
+}));
 </script>
 
 <style scoped>
@@ -66,5 +92,11 @@ useHead({
     font-size: 12px;
     color: #909399;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.category-tag {
+    font-size: 10px;
 }
 </style>

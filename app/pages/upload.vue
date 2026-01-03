@@ -8,6 +8,21 @@
                 <el-form-item label="视频标题">
                     <el-input v-model="title" placeholder="请输入视频标题" required />
                 </el-form-item>
+                <el-form-item label="视频分类">
+                    <el-select
+                        v-model="category"
+                        placeholder="请选择视频分类"
+                        style="width: 100%"
+                        required
+                    >
+                        <el-option
+                            v-for="item in videoCategories"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        />
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="视频文件">
                     <div class="file-input-wrapper">
                         <input
@@ -73,10 +88,14 @@ useHead({
 });
 
 const title = ref('');
+const category = ref('');
 const videoFile = ref<File | null>(null);
 const thumbFile = ref<File | null>(null);
 const loading = ref(false);
 const token = useCookie('token');
+
+const appConfig = useAppConfig();
+const videoCategories = appConfig.videoCategories;
 
 definePageMeta({
     middleware: () => {
@@ -105,6 +124,7 @@ const handleUpload = async () => {
 
     const formData = new FormData();
     formData.append('title', title.value);
+    formData.append('category', category.value);
     formData.append('video', videoFile.value);
     formData.append('thumbnail', thumbFile.value);
 
@@ -118,7 +138,7 @@ const handleUpload = async () => {
         });
         ElMessage.success('上传成功');
         navigateTo('/');
-    } catch (error: any) {
+    } catch (error) {
         ElMessage.error(error.data?.statusMessage || '上传失败');
     } finally {
         loading.value = false;

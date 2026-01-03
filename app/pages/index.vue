@@ -23,6 +23,13 @@
                         <h3 class="video-title">{{ video.title }}</h3>
                         <div class="video-meta">
                             <span class="uploader">{{ video.uploader }}</span>
+                            <el-tag
+                                size="small"
+                                type="info"
+                                class="category-tag"
+                                disable-transitions
+                                >{{ getCategoryLabel(video.category) }}</el-tag
+                            >
                         </div>
                     </div>
                 </el-card>
@@ -33,6 +40,13 @@
 
 <script setup lang="ts">
 const { data: videos } = await useFetch('/api/videos');
+
+const appConfig = useAppConfig();
+const videoCategories = appConfig.videoCategories;
+
+const getCategoryLabel = (value?: string) => {
+    return videoCategories?.find((c) => c.value === value)?.label || value;
+};
 
 const formatDuration = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -93,12 +107,19 @@ const formatDuration = (seconds: number) => {
     height: 2.8em;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 .video-meta {
     margin-top: 8px;
     font-size: 13px;
     color: #909399;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+.category-tag {
+    font-size: 10px;
 }
 </style>

@@ -36,7 +36,6 @@ const logout = () => {
     token.value = null;
     const user = useCookie('user');
     user.value = null;
-    localStorage.removeItem('token'); // Keep for compatibility if needed
     navigateTo('/login');
 };
 </script>

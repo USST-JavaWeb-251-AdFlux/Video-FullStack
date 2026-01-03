@@ -53,9 +53,6 @@ const handleLogin = async () => {
         tokenCookie.value = token;
         userCookie.value = user;
 
-        // Also set to localStorage for the layout to pick up
-        localStorage.setItem('token', token);
-
         ElMessage.success('登录成功');
         navigateTo('/');
     } catch (error: unknown) {

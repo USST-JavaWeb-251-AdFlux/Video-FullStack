@@ -11,6 +11,7 @@ export interface Video {
     url: string;
     thumbnail_url: string;
     duration: number;
+    category: string;
     uploader_id: number;
     created_at: Date;
 }

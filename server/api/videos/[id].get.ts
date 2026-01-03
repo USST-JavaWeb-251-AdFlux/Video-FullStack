@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
     const id = getRouterParam(event, 'id');
     if (!id) {
-        throw createError({ statusCode: 400, statusMessage: 'Missing ID' });
+        throw createError({ statusCode: 400, statusMessage: '缺少 ID' });
     }
 
     const videos = await sql`
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     `;
 
     if (videos.length === 0) {
-        throw createError({ statusCode: 404, statusMessage: 'Video not found' });
+        throw createError({ statusCode: 404, statusMessage: '视频未找到' });
     }
 
     return videos[0];

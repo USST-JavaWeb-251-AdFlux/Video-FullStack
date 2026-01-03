@@ -7,21 +7,21 @@ export default defineEventHandler(async (event) => {
     if (!username || !password) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Username and password are required',
+            statusMessage: '用户名和密码是必填项',
         });
     }
 
     if (username.length < 4 || username.length > 255) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Username must be between 4 and 255 characters',
+            statusMessage: '用户名长度必须在 4 到 255 个字符之间',
         });
     }
 
     if (password.length < 8 || password.length > 255) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Password must be between 8 and 255 characters',
+            statusMessage: '密码长度必须在 8 到 255 个字符之间',
         });
     }
 
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     if (existingUsers.length > 0) {
         throw createError({
             statusCode: 409,
-            statusMessage: 'Username already exists',
+            statusMessage: '用户名已存在',
         });
     }
 

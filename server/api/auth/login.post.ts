@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     if (!username || !password) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Username and password are required',
+            statusMessage: '用户名和密码是必填项',
         });
     }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     if (!user) {
         throw createError({
             statusCode: 401,
-            statusMessage: 'Invalid credentials',
+            statusMessage: '用户名或密码错误',
         });
     }
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     if (!isValid) {
         throw createError({
             statusCode: 401,
-            statusMessage: 'Invalid credentials',
+            statusMessage: '用户名或密码错误',
         });
     }
 

@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
     const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
 
     if (!videoFile || !thumbnailFile || !title) {
-        throw createError({ statusCode: 400, statusMessage: 'Missing video, thumbnail or title' });
+        throw createError({ statusCode: 400, statusMessage: '缺少视频、封面或标题' });
     }
 
     const videoExt = path.extname(videoFile.originalFilename || '.mp4');

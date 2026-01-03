@@ -8,7 +8,7 @@ export const getUserFromToken = (event: H3Event) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         throw createError({
             statusCode: 401,
-            statusMessage: 'Unauthorized',
+            statusMessage: '未授权',
         });
     }
 
@@ -19,7 +19,7 @@ export const getUserFromToken = (event: H3Event) => {
     } catch {
         throw createError({
             statusCode: 401,
-            statusMessage: 'Invalid token',
+            statusMessage: '无效的令牌',
         });
     }
 };

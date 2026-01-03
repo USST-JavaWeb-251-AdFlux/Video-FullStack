@@ -1,8 +1,18 @@
 import ffmpeg from 'fluent-ffmpeg';
 import formidable from 'formidable';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { v4 as uuidv4 } from 'uuid';
+
+async function getFileHash(filePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const hash = crypto.createHash('sha256');
+        const stream = fs.createReadStream(filePath);
+        stream.on('data', (data) => hash.update(data));
+        stream.on('end', () => resolve(hash.digest('hex')));
+        stream.on('error', reject);
+    });
+}
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
@@ -37,14 +47,26 @@ export default defineEventHandler(async (event) => {
     const videoExt = path.extname(videoFile.originalFilename || '.mp4');
     const thumbExt = path.extname(thumbnailFile.originalFilename || '.jpg');
 
-    const videoFilename = `${uuidv4()}${videoExt}`;
-    const thumbFilename = `${uuidv4()}${thumbExt}`;
+    const videoHash = await getFileHash(videoFile.filepath);
+    const thumbHash = await getFileHash(thumbnailFile.filepath);
+
+    const videoFilename = `${videoHash}${videoExt}`;
+    const thumbFilename = `${thumbHash}${thumbExt}`;
 
     const videoPath = path.join(uploadDir, videoFilename);
     const thumbPath = path.join(uploadDir, thumbFilename);
 
-    fs.renameSync(videoFile.filepath, videoPath);
-    fs.renameSync(thumbnailFile.filepath, thumbPath);
+    if (fs.existsSync(videoPath)) {
+        fs.unlinkSync(videoFile.filepath);
+    } else {
+        fs.renameSync(videoFile.filepath, videoPath);
+    }
+
+    if (fs.existsSync(thumbPath)) {
+        fs.unlinkSync(thumbnailFile.filepath);
+    } else {
+        fs.renameSync(thumbnailFile.filepath, thumbPath);
+    }
 
     // Get duration
     const duration = await new Promise<number>((resolve) => {

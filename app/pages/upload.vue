@@ -68,6 +68,10 @@
 <script setup lang="ts">
 import { Picture, VideoCamera } from '@element-plus/icons-vue';
 
+useHead({
+    title: '上传 | Video Hub',
+});
+
 const title = ref('');
 const videoFile = ref<File | null>(null);
 const thumbFile = ref<File | null>(null);
@@ -77,7 +81,7 @@ const token = useCookie('token');
 definePageMeta({
     middleware: () => {
         if (!token.value) {
-            if (process.client) {
+            if (import.meta.client) {
                 ElMessage.warning('请先登录');
             }
             return navigateTo('/login');

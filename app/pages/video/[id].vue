@@ -21,6 +21,10 @@
 <script setup lang="ts">
 const route = useRoute();
 const { data: video } = await useFetch(`/api/videos/${route.params.id}`);
+
+useHead({
+    title: video.value ? `${video.value.title} | Video Hub` : 'Video Hub',
+});
 </script>
 
 <style scoped>

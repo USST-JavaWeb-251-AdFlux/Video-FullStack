@@ -78,7 +78,7 @@ const formatDuration = (seconds: number) => {
     left: 0;
     width: 100%;
     height: 100%;
-    object-cover: cover;
+    object-fit: cover;
 }
 .duration-tag {
     position: absolute;

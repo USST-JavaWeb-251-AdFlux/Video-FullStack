@@ -83,7 +83,7 @@ export default defineEventHandler(async (event) => {
     const videoUrl = `/uploads/${videoFilename}`;
     const thumbUrl = `/uploads/${thumbFilename}`;
 
-    const result = await sql`
+    const result = await sql<{ id: number }[]>`
         INSERT INTO videos (title, url, thumbnail_url, duration, uploader_id)
         VALUES (${title}, ${videoUrl}, ${thumbUrl}, ${duration}, ${user.id})
         RETURNING id

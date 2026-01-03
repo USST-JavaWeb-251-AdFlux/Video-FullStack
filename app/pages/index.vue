@@ -32,15 +32,7 @@
 </template>
 
 <script setup lang="ts">
-interface Video {
-    id: number;
-    title: string;
-    thumbnail_url: string;
-    duration: number;
-    uploader: string;
-}
-
-const { data: videos } = await useFetch<Video[]>('/api/videos');
+const { data: videos } = await useFetch('/api/videos');
 
 const formatDuration = (seconds: number) => {
     const m = Math.floor(seconds / 60);

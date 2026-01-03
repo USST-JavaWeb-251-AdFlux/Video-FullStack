@@ -19,17 +19,8 @@
 </template>
 
 <script setup lang="ts">
-interface VideoDetail {
-    id: number;
-    title: string;
-    url: string;
-    thumbnail_url: string;
-    duration: number;
-    uploader: string;
-}
-
 const route = useRoute();
-const { data: video } = await useFetch<VideoDetail>(`/api/videos/${route.params.id}`);
+const { data: video } = await useFetch(`/api/videos/${route.params.id}`);
 </script>
 
 <style scoped>

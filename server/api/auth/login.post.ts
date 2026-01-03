@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    const users = await sql`SELECT * FROM users WHERE username = ${username}`;
+    const users = await sql<User[]>`SELECT * FROM users WHERE username = ${username}`;
     const user = users[0];
 
     if (!user) {

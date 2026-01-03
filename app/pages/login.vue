@@ -40,16 +40,13 @@ const loading = ref(false);
 const handleLogin = async () => {
     loading.value = true;
     try {
-        const { token, user } = await $fetch<{
-            token: string;
-            user: { id: number; username: string };
-        }>('/api/auth/login', {
+        const { token, user } = await $fetch('/api/auth/login', {
             method: 'POST',
             body: { username: username.value, password: password.value },
         });
 
-        const tokenCookie = useCookie<string>('token');
-        const userCookie = useCookie<{ id: number; username: string }>('user');
+        const tokenCookie = useCookie('token');
+        const userCookie = useCookie<typeof user>('user');
         tokenCookie.value = token;
         userCookie.value = user;
 

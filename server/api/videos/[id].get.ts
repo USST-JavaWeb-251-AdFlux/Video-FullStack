@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
         throw createError({ statusCode: 400, statusMessage: 'Missing ID' });
     }
 
-    const videos = await db`
+    const videos = await sql`
         SELECT v.*, u.username as uploader
         FROM videos v
         JOIN users u ON v.uploader_id = u.id

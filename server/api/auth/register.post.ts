@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if user exists
-    const existingUsers = await db`SELECT id FROM users WHERE username = ${username}`;
+    const existingUsers = await sql`SELECT id FROM users WHERE username = ${username}`;
     if (existingUsers.length > 0) {
         throw createError({
             statusCode: 409,
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    await db`
+    await sql`
         INSERT INTO users (username, password_hash)
         VALUES (${username}, ${hash})
     `;

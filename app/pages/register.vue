@@ -36,6 +36,14 @@ const password = ref('');
 const loading = ref(false);
 
 const handleRegister = async () => {
+    if (username.value.length < 4 || username.value.length > 255) {
+        ElMessage.error('用户名长度必须在 4 到 255 个字符之间');
+        return;
+    }
+    if (password.value.length < 8 || password.value.length > 255) {
+        ElMessage.error('密码长度必须在 8 到 255 个字符之间');
+        return;
+    }
     loading.value = true;
     try {
         await $fetch('/api/auth/register', {

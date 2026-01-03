@@ -11,6 +11,20 @@ export default defineEventHandler(async (event) => {
         });
     }
 
+    if (username.length < 4 || username.length > 255) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: 'Username must be between 4 and 255 characters',
+        });
+    }
+
+    if (password.length < 8 || password.length > 255) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: 'Password must be between 8 and 255 characters',
+        });
+    }
+
     // Check if user exists
     const existingUsers = await sql`SELECT id FROM users WHERE username = ${username}`;
     if (existingUsers.length > 0) {

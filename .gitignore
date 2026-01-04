@@ -24,4 +24,4 @@ logs
 !.env.example
 
 # Uploaded files
-/public/uploads
+/uploads

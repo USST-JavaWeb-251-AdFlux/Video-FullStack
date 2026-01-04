@@ -5,7 +5,12 @@
                 <h1 class="video-title">{{ video.title }}</h1>
             </template>
             <div class="video-wrapper">
-                <video controls class="video-player" :src="video.url" />
+                <video
+                    controls
+                    class="video-player"
+                    :src="video.url"
+                    :poster="video.thumbnail_url"
+                />
             </div>
             <div class="video-info">
                 <el-avatar :size="40" icon="UserFilled" />

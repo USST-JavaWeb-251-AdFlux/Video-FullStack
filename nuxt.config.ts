@@ -8,6 +8,9 @@ export default defineNuxtConfig({
             isCustomElement: (tag) => tag.startsWith('adflux-'),
         },
     },
+    nitro: {
+        publicAssets: [{ dir: 'uploads', baseURL: '/uploads' }],
+    },
     elementPlus: {
         icon: 'ElIcon',
     },

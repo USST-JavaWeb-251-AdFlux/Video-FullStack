@@ -1,13 +1,13 @@
 import ffmpeg from 'fluent-ffmpeg';
 import formidable from 'formidable';
 import crypto from 'node:crypto';
-import fs from 'node:fs';
+import { createReadStream, promises as fs } from 'node:fs';
 import path from 'node:path';
 
 async function getFileHash(filePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         const hash = crypto.createHash('sha256');
-        const stream = fs.createReadStream(filePath);
+        const stream = createReadStream(filePath);
         stream.on('data', (data) => hash.update(data));
         stream.on('end', () => resolve(hash.digest('hex')));
         stream.on('error', reject);
@@ -24,8 +24,10 @@ export default defineEventHandler(async (event) => {
     const user = getUserFromToken(event);
 
     const uploadDir = path.join(process.cwd(), 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
+    try {
+        await fs.access(uploadDir);
+    } catch {
+        await fs.mkdir(uploadDir, { recursive: true });
     }
 
     const form = formidable({
@@ -57,16 +59,18 @@ export default defineEventHandler(async (event) => {
     const videoPath = path.join(uploadDir, videoFilename);
     const thumbPath = path.join(uploadDir, thumbFilename);
 
-    if (fs.existsSync(videoPath)) {
-        fs.unlinkSync(videoFile.filepath);
-    } else {
-        fs.renameSync(videoFile.filepath, videoPath);
+    try {
+        await fs.access(videoPath);
+        await fs.unlink(videoFile.filepath);
+    } catch {
+        await fs.rename(videoFile.filepath, videoPath);
     }
 
-    if (fs.existsSync(thumbPath)) {
-        fs.unlinkSync(thumbnailFile.filepath);
-    } else {
-        fs.renameSync(thumbnailFile.filepath, thumbPath);
+    try {
+        await fs.access(thumbPath);
+        await fs.unlink(thumbnailFile.filepath);
+    } catch {
+        await fs.rename(thumbnailFile.filepath, thumbPath);
     }
 
     // Get duration

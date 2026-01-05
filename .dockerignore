@@ -2,7 +2,7 @@ node_modules
 .nuxt
 .output
 uploads
-\*.log
+*.log
 dist
 .git
 .github

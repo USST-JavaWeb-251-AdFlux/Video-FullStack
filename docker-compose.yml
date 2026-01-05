@@ -1,5 +1,5 @@
 services:
-  app:
+  video-app:
     image: video-app:latest
     container_name: video-app
     ports:
@@ -9,7 +9,6 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
-      - ADFLUX_VERIFICATION=${ADFLUX_VERIFICATION}
       - FFMPEG_PATH=/usr/bin/ffmpeg
       - FFPROBE_PATH=/usr/bin/ffprobe
     extra_hosts:

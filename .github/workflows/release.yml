@@ -39,7 +39,7 @@ jobs:
 
       - name: Package Release
         run: |
-          zip -j video-release-${{ steps.vars.outputs.hash }}.zip video-app.tar.gz docker-compose.yml
+          zip -j video-${{ steps.vars.outputs.hash }}.zip video-app.tar.gz docker-compose.yml
 
       - name: Auto Release
         uses: softprops/action-gh-release@v2
@@ -48,6 +48,6 @@ jobs:
           name: Release-${{ steps.vars.outputs.hash }}
           draft: false
           prerelease: false
-          files: video-release-${{ steps.vars.outputs.hash }}.zip
+          files: video-${{ steps.vars.outputs.hash }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

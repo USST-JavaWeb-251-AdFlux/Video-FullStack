@@ -1,0 +1,53 @@
+name: Build and Release
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set vars
+        id: vars
+        run: |
+          export TZ='Asia/Shanghai'
+          echo "hash=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          echo "time=$(git log -1 --format=%cd --date=format-local:%Y.%m.%d.%H%M)" >> $GITHUB_OUTPUT
+
+      - name: Create environment file
+        run: echo "$ENV_CONTENT" > .env
+        env:
+          ENV_CONTENT: ${{ secrets.ENV_FILE }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t video-app .
+
+      - name: Save Docker image to tar
+        run: |
+          docker save video-app | gzip > video-app.tar.gz
+
+      - name: Package Release
+        run: |
+          zip -j video-${{ steps.vars.outputs.hash }}.zip video-app.tar.gz docker-compose.yml
+
+      - name: Auto Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.vars.outputs.time }}-${{ steps.vars.outputs.hash }}
+          name: Release-${{ steps.vars.outputs.hash }}
+          draft: false
+          prerelease: false
+          files: video-${{ steps.vars.outputs.hash }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

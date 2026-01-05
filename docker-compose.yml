@@ -1,7 +1,7 @@
 services:
   app:
-    image: video-fullstack:latest
-    container_name: video-fullstack
+    image: video-app:latest
+    container_name: video-app
     ports:
       - "${PORT:-3000}:3000"
     volumes:

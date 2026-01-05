@@ -9,7 +9,7 @@ RUN pnpm build
 
 # Stage 2: Run
 FROM node:24-slim AS runner
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /app/.output ./.output
 RUN mkdir -p /app/uploads

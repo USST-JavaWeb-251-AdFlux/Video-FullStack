@@ -1,0 +1,17 @@
+services:
+  app:
+    image: video-fullstack:latest
+    container_name: video-fullstack
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADFLUX_VERIFICATION=${ADFLUX_VERIFICATION}
+      - FFMPEG_PATH=/usr/bin/ffmpeg
+      - FFPROBE_PATH=/usr/bin/ffprobe
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always

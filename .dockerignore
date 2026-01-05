@@ -1,0 +1,9 @@
+node_modules
+.nuxt
+.output
+uploads
+\*.log
+dist
+.git
+.github
+README.md

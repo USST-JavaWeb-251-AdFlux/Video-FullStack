@@ -31,7 +31,7 @@ export default defineNuxtConfig({
         },
     },
     runtimeConfig: {
-        dbUrl: process.env.DATABASE_URL,
+        dbUrl: process.env.DB_URL,
         jwtSecret: process.env.JWT_SECRET,
         ffmpegPath: process.env.FFMPEG_PATH,
         ffprobePath: process.env.FFPROBE_PATH,
